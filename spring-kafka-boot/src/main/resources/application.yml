@@ -2,8 +2,22 @@ spring:
   kafka:
     consumer:
       auto-offset-reset: earliest
-      group-id: boot
+  data.mongodb:
+    host: mongo
+    port: 27017
+    database: events
+
+server:
+  port: 9090
+  
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 kafka:
+  bootstrapAddress: kafka:9092
+  groupId:
+    key: groupId
+    defaultValue: boot
   topic:
     boot: boot.t

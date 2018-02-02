@@ -9,7 +9,8 @@
 
   <logger name="com.codenotfound" level="INFO" />
   <logger name="org.springframework" level="WARN" />
-
+  <logger name="org.springframework.data.mongodb" level="DEBUG" />
+  <logger name="org.springframework.data.mongodb.core.aggregation" level="DEBUG" />
 
   <root level="WARN">
     <appender-ref ref="STDOUT" />
