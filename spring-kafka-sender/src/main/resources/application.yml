@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: boot
+
+server:
+  port: 9091
+  
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+kafka:
+  bootstrapAddress: kafka:9092
+  topic:
+    boot: boot.t

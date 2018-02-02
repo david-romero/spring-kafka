@@ -1,0 +1,85 @@
+version: '3'
+
+services:
+
+  consul:
+    image: consul:latest
+    command: agent -server -dev -client 0.0.0.0 -log-level err
+    ports:
+    - 8500:8500
+    healthcheck:
+      test: "exit 0"
+  
+  redis:
+    image: redis
+    ports:
+        - "6379:6379"
+
+  mongo:
+    image: mongo:3.2.4
+    ports:
+    - 27017:27017
+    command: --smallfiles
+    
+  mongo-client:
+    image: mongoclient/mongoclient
+    ports:
+    - 3000:3000
+    environment:
+    - MONGOCLIENT_DEFAULT_CONNECTION_URL=mongodb://mongo:27017
+    links:
+    - mongo
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    hostname: kafka
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: myTopic
+    links:
+      - zookeeper
+      
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+      
+      
+  spring-kafka-boot-receiver-1:
+    image: davromalc/spring-kafka-boot-receiver
+    ports:
+    - 9090:9090
+    links:
+    - mongo
+    - redis
+    - consul
+    - kafka
+    environment:
+    - groupId=boot1
+    depends_on:
+      - redis
+      - kafka
+      - consul
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+    
+    
+    
+  spring-kafka-boot-receiver-2:
+    image: davromalc/spring-kafka-boot-receiver
+    ports:
+    - 8888:9090
+    links:
+    - mongo
+    - redis
+    - consul
+    - kafka
+    environment:
+    - groupId=boot2
+    depends_on:
+      - redis
+      - kafka
+      - consul
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+  
