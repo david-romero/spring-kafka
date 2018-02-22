@@ -26,4 +26,6 @@ public class Event implements Serializable {
 	
 	private String payload;
 	
+	private int partition;
+	
 }
