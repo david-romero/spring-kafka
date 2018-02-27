@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DtoToEventMapper implements Function<Dto, Optional<Event>> {
 
-	private final LockFactory lockFactory;
+	private final LockHandler<? extends FutureLock>  lockHandler;
 	
 	private final String hostname;
 	
@@ -28,14 +28,14 @@ public class DtoToEventMapper implements Function<Dto, Optional<Event>> {
 	
 	@Autowired
 	public DtoToEventMapper(LockFactory lockFactory) throws UnknownHostException {
-		this.lockFactory = lockFactory;
+		this.lockHandler = lockFactory.getLockHandler();
 		this.hostname = Inet4Address.getLocalHost().getHostName();
 	}
 
 
 	@Override
 	public Optional<Event> apply(Dto dto) {
-		final FutureLock lock = lockFactory.getLockHandler().acquire(dto);
+		final FutureLock lock = lockHandler.acquire(dto);
 		boolean acquired = lock.tryLock();
 		if (acquired) {
 			log.info("Adquired lock for id [{}] and host [{}]", dto.getId(), hostname);
@@ -45,7 +45,7 @@ public class DtoToEventMapper implements Function<Dto, Optional<Event>> {
 			event.setInsertDate(LocalDateTime.now());
 			event.setPayload(dto.getData());
 			event.setPartition(dto.getPartition());
-			lock.expireAt(LocalDateTime.now().plusSeconds(15));
+			lockHandler.release(lock);
 			return Optional.of(event);
 		} else {
 			log.info("hostname [{}] did not adquire the lock for id [{}]", hostname, dto.getId());

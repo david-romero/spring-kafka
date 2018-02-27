@@ -1,24 +1,12 @@
 package com.codenotfound.kafka.consumer;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
@@ -33,9 +21,7 @@ import com.codenotfound.kafka.model.Event;
 import com.codenotfound.kafka.repositories.EventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import consul.Consul;
 import consul.ConsulException;
-import consul.KeyValue;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -61,13 +47,17 @@ public class Receiver {
 		log.info("received from partition:[{}] [{}] elements with payload=[{}] , topic:[{}] , timestamp:[{}]",
 				partition, messages.size(), StringUtils.collectionToCommaDelimitedString(messages),
 				StringUtils.collectionToCommaDelimitedString(topic), ts);
-		final List<Event> eventsToPersist = messages.parallelStream()
-				.map(this::deserialize)
-				.map(d -> Dto.builder().id(d.getId()).timestamp(ts).partition(partition).data(d.getData()).build())
-				.map(mapper).filter(Optional::isPresent)
-				.map(Optional::get)
-				.collect(Collectors.toList());
 		
+		final Iterator<String> messagesIterator = messages.iterator();
+		final List<Event> eventsToPersist = new ArrayList<>(messages.size());
+		while ( messagesIterator.hasNext() ){
+			final Dto dtoParsed = deserialize(messagesIterator.next());
+			final Dto dto =  Dto.builder().id(dtoParsed.getId()).timestamp(ts).partition(partition).data(dtoParsed.getData()).build();
+			final Optional<Event> event = mapper.apply(dto);
+			if (event.isPresent()){
+				eventsToPersist.add(event.get());
+			}
+		}		
 		
 		if (!eventsToPersist.isEmpty()) {
 			log.info("Persisting [{}] objects", eventsToPersist.size());

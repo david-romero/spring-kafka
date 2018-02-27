@@ -21,3 +21,11 @@ kafka:
     defaultValue: boot
   topic:
     boot: boot.t
+    
+consul:
+  server: consul
+  port: 8500
+  
+redis:
+  server: redis
+  port: 6379

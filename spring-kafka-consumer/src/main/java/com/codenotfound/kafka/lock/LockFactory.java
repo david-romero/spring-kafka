@@ -20,8 +20,7 @@ public class LockFactory  {
 	private final Environment env;
 	
 	@Autowired
-	public LockFactory(RedisLock redisLock, ConsulLock consulLock, Environment env) {
-		super();
+	public LockFactory(LockHandler<CustomRedisLock> redisLock, LockHandler<CustomConsulLock> consulLock, Environment env) {
 		this.redisLock = redisLock;
 		this.consulLock = consulLock;
 		this.env = env;

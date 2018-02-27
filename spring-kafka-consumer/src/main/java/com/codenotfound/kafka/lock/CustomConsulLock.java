@@ -4,7 +4,6 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -17,18 +16,19 @@ import consul.KeyValue;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CustomConsulLock implements FutureLock {
+class CustomConsulLock implements FutureLock {
 
 	private final String id;
 	private final String sessionId;
 	private final KeyValue keyValue;
 	private String hostname;
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private final ScheduledExecutorService scheduler;
 
-	public CustomConsulLock(final Dto dto, final KeyValue keyValue, final String sessionId) {
+	public CustomConsulLock(final Dto dto, final KeyValue keyValue, final String sessionId, final ScheduledExecutorService scheduler) {
 		this.id = dto.getId().toString();
 		this.sessionId = sessionId;
 		this.keyValue = keyValue;
+		this.scheduler = scheduler;
 		try {
 			hostname = Inet4Address.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {

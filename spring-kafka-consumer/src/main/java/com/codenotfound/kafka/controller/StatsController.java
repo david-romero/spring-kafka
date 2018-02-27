@@ -31,8 +31,6 @@ public class StatsController {
 	@GetMapping("/api/time")
 	public String getTime(){
 		
-		
-		
 		List<Event> events = eventRepository.findAll();
 		
 		List<Event> eventsFiltered = events.parallelStream().filter(e -> e.getDate() != null && e.getInsertDate() != null).collect(Collectors.toList());

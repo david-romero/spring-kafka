@@ -2,10 +2,10 @@ package com.codenotfound.kafka.lock;
 
 import com.codenotfound.kafka.model.Dto;
 
-public interface LockHandler<T extends java.util.concurrent.locks.Lock> {
+public interface LockHandler<T extends FutureLock> {
 
 	 T acquire(Dto dto);
 	
-	boolean release(T lock);
+	boolean release(FutureLock lock);
 	
 }

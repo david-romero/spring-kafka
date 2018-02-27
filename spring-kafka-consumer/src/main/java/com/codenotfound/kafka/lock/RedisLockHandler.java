@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import com.codenotfound.kafka.model.Dto;
 
 @Component
-public class RedisLock implements LockHandler<CustomRedisLock> {
+class RedisLockHandler implements LockHandler<CustomRedisLock> {
 
 	private final RedissonClient redisson;
 	
 	@Autowired
-	public RedisLock(RedissonClient redisson) {
+	public RedisLockHandler(RedissonClient redisson) {
 		this.redisson = redisson;
 	}
 
@@ -24,7 +24,7 @@ public class RedisLock implements LockHandler<CustomRedisLock> {
 	}
 	
 	@Override
-	public boolean release(CustomRedisLock lock) {
+	public boolean release(FutureLock lock) {
 		return lock.expireAt(LocalDateTime.now().plusSeconds(15)); 
 	}
 

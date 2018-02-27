@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Condition;
 
 import org.redisson.api.RLock;
 
-public class CustomRedisLock implements FutureLock {
+class CustomRedisLock implements FutureLock {
 
 	private final RLock rLock;
 	
