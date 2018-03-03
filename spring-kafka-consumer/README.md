@@ -1,7 +1,11 @@
-# spring-kafka-boot
+# spring-boot-kafka-lisener
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.codenotfound:spring-kafka-boot)](https://sonarqube.com/dashboard/index/com.codenotfound:spring-kafka-boot)
+A spring boot service which is able to listen from a kafka topic.
 
-A detailed step-by-step tutorial on setting up Spring Kafka using Spring Boot autoconfiguration.
+It receives messages from Kafka and store them in mongo. To avoid duplicates with uses a locking mechanism with two strategies: redis and consul. You need to choose a straregy through environment variables. If you put lockTool=consul, the strategy of locking is handled by consul, however, if you put lockTool=redis, the strategy of locking is handled by redis.
 
-[https://www.codenotfound.com/spring-kafka-boot-example.html](https://www.codenotfound.com/spring-kafka-boot-example.html)
+Furthemore, you need to set up kafka group by through environment variables too.
+
+Example: groupId=boot1
+
+

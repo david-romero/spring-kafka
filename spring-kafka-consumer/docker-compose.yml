@@ -20,15 +20,6 @@ services:
     ports:
     - 27017:27017
     command: --smallfiles
-    
-#  mongo-client:
-#    image: mongoclient/mongoclient
-#    ports:
-#    - 3000:3000
-#    environment:
-#    - MONGOCLIENT_DEFAULT_CONNECTION_URL=mongodb://mongo:27017
-#    links:
-#    - mongo
 
   zookeeper:
     image: wurstmeister/zookeeper
@@ -75,94 +66,7 @@ services:
 #      - redis
 #      - kafka
 #    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
-#    
-#    
-#    
-#  spring-kafka-boot-receiver-2:
-#    image: davromalc/spring-kafka-boot-receiver
-#    ports:
-#    - 8888:9090
-#    links:
-#    - mongo
-#    - redis
-#    - kafka
-#    environment:
-#    - groupId=boot2
-#    depends_on:
-#      - redis
-#      - kafka
-#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
-    
-    
-    
-#  spring-kafka-boot-receiver-3:
-#    image: davromalc/spring-kafka-boot-receiver
-#    ports:
-#    - 8887:9090
-#    links:
-#    - mongo
-#    - redis
-#    - kafka
-#    environment:
-#    - groupId=boot3
-#    depends_on:
-#      - redis
-#      - kafka
-#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
-#    
-#    
-#  spring-kafka-boot-receiver-4:
-#    image: davromalc/spring-kafka-boot-receiver
-#    ports:
-#    - 8886:9090
-#    links:
-#    - mongo
-#    - redis
-#    - consul
-#    - kafka
-#    environment:
-#    - groupId=boot4
-#    depends_on:
-#      - redis
-#      - kafka
-#      - consul
-#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"  
-#    
-#    
-#  spring-kafka-boot-receiver-5:
-#    image: davromalc/spring-kafka-boot-receiver
-#    ports:
-#    - 8885:9090
-#    links:
-#    - mongo
-#    - redis
-#    - consul
-#    - kafka
-#    environment:
-#    - groupId=boot5
-#    depends_on:
-#      - redis
-#      - kafka
-#      - consul
-#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
-#    
-#    
-#  spring-kafka-boot-receiver-6:
-#    image: davromalc/spring-kafka-boot-receiver
-#    ports:
-#    - 8884:9090
-#    links:
-#    - mongo
-#    - redis
-#    - consul
-#    - kafka
-#    environment:
-#    - groupId=boot6
-#    depends_on:
-#      - redis
-#      - kafka
-#      - consul
-#    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"        
+  
     
     
       

@@ -1,7 +1,6 @@
-# spring-kafka-boot
+# spring-kafka-sender
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.codenotfound:spring-kafka-boot)](https://sonarqube.com/dashboard/index/com.codenotfound:spring-kafka-boot)
+An example of setting up Spring Kafka using Spring Boot autoconfiguration.
 
-A detailed step-by-step tutorial on setting up Spring Kafka using Spring Boot autoconfiguration.
-
+Forked from:
 [https://www.codenotfound.com/spring-kafka-boot-example.html](https://www.codenotfound.com/spring-kafka-boot-example.html)
